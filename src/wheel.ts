@@ -1,27 +1,28 @@
+const centerX = 250;
+const centerY = 250;
+const radius = 250;
+
 class Wheel {
     parts: string[] = [];
     ctx: CanvasRenderingContext2D;
     len: number;
+    pieAngle: number;
+    divider: number;
 
     constructor(ctx: CanvasRenderingContext2D, parts: string[] = []) {
         this.ctx = ctx;
         this.parts = parts;
         this.len = this.parts.length;
+        this.pieAngle = (2 * Math.PI) / this.len;
+        this.divider = 360 / this.len;
     }
 
-    getIndex = (rotation: number) => {
-        return (
-            Math.floor(this.len - (rotation / 2) * Math.PI * this.len) %
-            this.len
+    getIndex = (rotation: number) =>
+        Math.floor(
+            Math.ceil((rotation + this.divider / 2) % 360) / this.divider
         );
-    };
 
     draw = () => {
-        const pieAngle = (2 * Math.PI) / this.parts.length;
-        const centerX = 250;
-        const centerY = 250;
-        const radius = 250;
-
         for (let i = 0; i < this.parts.length; i++) {
             this.ctx.save();
             // WHEEL PARTS
@@ -31,8 +32,8 @@ class Wheel {
                 250,
                 250,
                 radius,
-                i * pieAngle,
-                (i + 1) * pieAngle,
+                i * this.pieAngle,
+                (i + 1) * this.pieAngle,
                 false
             );
             this.ctx.lineWidth = 150;
@@ -47,7 +48,7 @@ class Wheel {
 
             // TEXT
             this.ctx.translate(centerX, centerY);
-            this.ctx.rotate(pieAngle * i + pieAngle / 2);
+            this.ctx.rotate(this.pieAngle * i + this.pieAngle / 2);
             this.ctx.fillStyle = "#fff";
             this.ctx.shadowColor = "black";
             this.ctx.shadowBlur = 3;

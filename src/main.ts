@@ -12,6 +12,7 @@ const parts = [
     "Family",
     "Faith",
     "Health",
+    "Sadness",
 ];
 
 const canvas: HTMLCanvasElement = document.querySelector("#arrow")!;
